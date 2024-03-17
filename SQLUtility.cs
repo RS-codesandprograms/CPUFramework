@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace CPUFramework
 {
@@ -16,15 +17,26 @@ namespace CPUFramework
             SqlConnection conn = new();
             conn.ConnectionString = ConnectionString;
             conn.Open();
+
             var cmd = new SqlCommand();
             cmd.Connection = conn;
             cmd.CommandText = sqlstatement;
             var dr = cmd.ExecuteReader();
             dt.Load(dr);
+
+            SetAllColumnsAllowNull(dt);
+
             return dt;
 
         }
 
+        private static void SetAllColumnsAllowNull(DataTable dt)
+        {
+            foreach(DataColumn c in dt.Columns)
+            {
+                c.AllowDBNull = true;
+            }
+        }
         public static void DebugPrintDataTable(DataTable dt)
         {
             foreach(DataRow r in dt.Rows)
