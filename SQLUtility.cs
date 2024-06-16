@@ -10,6 +10,7 @@ namespace CPUFramework
         public static string ConnectionString = "";
 
 
+
         public static DataTable GetDataTable(string sqlstatement) // take a SQL statement and return a DataTable
         {
             Debug.Print(sqlstatement);
@@ -29,6 +30,8 @@ namespace CPUFramework
             return dt;
 
         }
+
+        
 
         public static void ExecuteSQL(string sqlstatement)
         {
