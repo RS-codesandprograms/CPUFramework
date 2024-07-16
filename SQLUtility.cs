@@ -70,6 +70,31 @@ namespace CPUFramework
         }
 
 
+        public static SqlCommand GetSQLCommand(string sprocname)
+        {
+            DataTable dt = new();
+            SqlConnection conn = new SqlConnection(SQLUtility.ConnectionString);
+            SqlCommand cmd = new SqlCommand(sprocname, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            conn.Open();
+            SqlCommandBuilder.DeriveParameters(cmd);
+        }
+
+        public static SqlCommand GetDataTable(SqlCommand cmd)
+        {
+            
+            SqlDataReader dr = cmd.ExecuteReader();
+            dt.Load(dr);
+            return dt;
+        }
+        
+            
+            cmd.Parameters["@PresidentId"].Value = PresidentId;
+           
+
+
+
     }
 }
 
