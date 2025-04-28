@@ -30,6 +30,21 @@ namespace CPUFramework
             return DoExecuteSQL(cmd, true);
         }
 
+        public static void SaveDataRow(DataRow row, string sprocname)
+        {
+            SqlCommand cmd = GetSQLCommand(sprocname);
+            foreach(DataColumn col in row.Table.Columns) {
+                string paramname = $"@{col.ColumnName}";
+                if (cmd.Parameters.Contains(paramname))
+                {
+                    cmd.Parameters[paramname].Value = row[col.ColumnName];
+                }
+
+            }
+            DoExecuteSQL(cmd, false);
+        }
+
+
         private static DataTable DoExecuteSQL(SqlCommand cmd, bool loadtable)
         {
             Debug.Print(GetSQL(cmd));
