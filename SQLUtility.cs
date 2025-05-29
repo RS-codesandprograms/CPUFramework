@@ -39,10 +39,9 @@ namespace CPUFramework
                 {
                     cmd.Parameters[paramname].Value = row[col.ColumnName];
                 }
-
-            }
+}
             DoExecuteSQL(cmd, false);
-
+        
             foreach(SqlParameter p in cmd.Parameters)
             {
                 if (p.Direction == ParameterDirection.InputOutput)
@@ -54,6 +53,7 @@ namespace CPUFramework
                     }
                 }
             }
+            row.Table.AcceptChanges();
         }
 
 
@@ -265,6 +265,18 @@ namespace CPUFramework
                 return value;
             }
         }
+
+
+        public static bool DoesTableHasChanges(DataTable dt)
+        {
+            bool b = false;
+            if(dt.GetChanges() != null)
+            {
+                b = true; 
+            }
+            return b; 
+        }
+
         public static string GetSQL(SqlCommand cmd)
         {
             string val = "";
