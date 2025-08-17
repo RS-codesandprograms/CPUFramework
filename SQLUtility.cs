@@ -34,7 +34,7 @@ namespace CPUFramework
 
         public static void SaveDataTable(DataTable dt, string sprocname)
         {
-          var rows =   dt.Select("", "", DataViewRowState.Added | DataViewRowState.ModifiedCurrent);
+          var rows = dt.Select("", "", DataViewRowState.Added | DataViewRowState.ModifiedCurrent);
             foreach(DataRow r in rows)
             {
                 SaveDataRow(r, sprocname, false); 
