@@ -34,10 +34,10 @@ namespace CPUFramework
 
         public static void SaveDataTable(DataTable dt, string sprocname)
         {
-          var rows = dt.Select("", "", DataViewRowState.Added | DataViewRowState.ModifiedCurrent);
-            foreach(DataRow r in rows)
+            var rows = dt.Select("", "", DataViewRowState.Added | DataViewRowState.ModifiedCurrent);
+            foreach (DataRow r in rows)
             {
-                SaveDataRow(r, sprocname, false); 
+                SaveDataRow(r, sprocname, false);
             }
             dt.AcceptChanges();
         }
@@ -45,21 +45,22 @@ namespace CPUFramework
         public static void SaveDataRow(DataRow row, string sprocname, bool acceptchanges = true)
         {
             SqlCommand cmd = GetSQLCommand(sprocname);
-            foreach(DataColumn col in row.Table.Columns) {
+            foreach (DataColumn col in row.Table.Columns)
+            {
                 string paramname = $"@{col.ColumnName}";
                 if (cmd.Parameters.Contains(paramname))
                 {
                     cmd.Parameters[paramname].Value = row[col.ColumnName];
                 }
-}
+            }
             DoExecuteSQL(cmd, false);
-        
-            foreach(SqlParameter p in cmd.Parameters)
+
+            foreach (SqlParameter p in cmd.Parameters)
             {
                 if (p.Direction == ParameterDirection.InputOutput)
                 {
                     string colname = p.ParameterName.Substring(1);
-                    if(row.Table.Columns.Contains(colname))
+                    if (row.Table.Columns.Contains(colname))
                     {
                         row[colname] = p.Value;
                     }
@@ -128,14 +129,14 @@ namespace CPUFramework
                     }
                 }
                 if (returnvalue == 1)
+                {
+                    if (msg == "")
                     {
-                        if (msg == "")
-                        {
-                            msg = $"{cmd.CommandText} did not do requested action.";
-                        }
-                        throw new Exception(msg);
+                        msg = $"{cmd.CommandText} did not do requested action.";
                     }
-                
+                    throw new Exception(msg);
+                }
+
             }
         }
 
@@ -246,14 +247,14 @@ namespace CPUFramework
             foreach (DataColumn c in dt.Columns)
             {
                 c.AllowDBNull = true;
-                c.AutoIncrement = false; 
+                c.AutoIncrement = false;
             }
         }
 
         public static int GetValueFromFirstRowAsInt(DataTable dt, string columnname)
         {
             int value = 0;
-            if(dt.Rows.Count > 0)
+            if (dt.Rows.Count > 0)
             {
                 DataRow r = dt.Rows[0];
                 if (r[columnname] != null && r[columnname] is int)
@@ -261,7 +262,7 @@ namespace CPUFramework
                     value = (int)r[columnname];
                 }
             }
-            return value; 
+            return value;
         }
 
         public static string GetValueFromFirstRowAsString(DataTable dt, string columnname)
@@ -284,11 +285,11 @@ namespace CPUFramework
         public static bool DoesTableHasChanges(DataTable dt)
         {
             bool b = false;
-            if(dt.GetChanges() != null)
+            if (dt.GetChanges() != null)
             {
-                b = true; 
+                b = true;
             }
-            return b; 
+            return b;
         }
 
         public static string GetSQL(SqlCommand cmd)
