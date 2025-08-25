@@ -282,7 +282,7 @@ namespace CPUFramework
         }
 
 
-        public static bool DoesTableHasChanges(DataTable dt)
+        public static bool DoesTableHaveChanges(DataTable dt)
         {
             bool b = false;
             if (dt.GetChanges() != null)
